@@ -11,13 +11,20 @@ stages:
       - joblib==0.17.0
       - pandas==1.1.4
       - scikit-learn==0.23.2
+      - mlflow==1.15.0
     cpu_request: 0.5
     memory_request_mb: 100
     batch:
       max_completion_time_seconds: 30
       retries: 2
+    secrets:
+      AWS_ACCESS_KEY_ID: mlflow-credentials
+      AWS_SECRET_ACCESS_KEY: mlflow-credentials
+      MLFLOW_S3_ENDPOINT_URL: mlflow-credentials
+      MLFLOW_TRACKING_URI: mlflow-credentials
   stage_2_scoring_service:
     executable_module_path: stage_2_scoring_service/serve_model.py
+    # TODO: show how to inject model from mlflow registry, rather than going via object storage
     requirements:
       - Flask==1.1.2
       - joblib==0.17.0
